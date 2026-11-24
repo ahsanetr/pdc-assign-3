@@ -1,0 +1,359 @@
+<title>Reign Tattoo Consent</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Big+Shoulders+Display:wght@700;800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow phone-first column, like a clipboard form handed over the counter.
+   Single dark look: black studio walls, bone type, gold for a shop named Reign.
+   Blackletter wordmark, the lettering style tattoo shops are known for. */
+:root {
+  color-scheme: dark;
+  --paper: #0b0a09;
+  --surface: #151311;
+  --ink: #ece6d8;
+  --muted: #9c9484;
+  --line: #2e2a25;
+  --stencil: #c9a35a;
+  --stencil-soft: #231d12;
+  --on-stencil: #0b0a09;
+  --alert: #ff8a75;
+  --ok: #7fc79a;
+  --blackletter: "Pirata One", "UnifrakturCook", Georgia, serif;
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+.wrap { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+header { display: flex; flex-direction: column; gap: 10px; padding-bottom: 18px; border-bottom: 1px solid var(--stencil); }
+.brand {
+  font-family: var(--blackletter); font-weight: 400; font-size: 60px; line-height: 0.95;
+  letter-spacing: 0.01em; margin: 0; color: var(--ink);
+}
+.brand span { color: var(--stencil); }
+.sub { margin: 0; color: var(--muted); font-size: 15px; }
+form, #done { display: flex; flex-direction: column; gap: 16px; }
+section {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0;
+}
+h2 {
+  font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: 0.04em;
+  text-transform: uppercase; margin: 0; text-wrap: balance;
+}
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 420px) { .row { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+label.lbl { font-size: 14px; font-weight: 600; }
+.opt { font-weight: 400; color: var(--muted); }
+input[type="text"], input[type="tel"], input[type="email"] {
+  font: inherit; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line); border-radius: 8px; padding: 12px; width: 100%;
+}
+input:focus-visible, button:focus-visible, summary:focus-visible, canvas:focus-visible {
+  outline: 3px solid var(--stencil); outline-offset: 2px;
+}
+.err { color: var(--alert); font-size: 14px; margin: 0; }
+.hint { color: var(--muted); font-size: 14px; margin: 0; }
+details { border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+summary {
+  cursor: pointer; padding: 14px; font-weight: 600; list-style: none;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "Open"; color: var(--stencil); font-size: 14px; font-weight: 600; }
+details[open] summary::after { content: "Close"; }
+.terms { padding: 0 14px 14px; max-height: 280px; overflow-y: auto; font-size: 15px; }
+.terms ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+.tag {
+  display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--stencil); background: var(--stencil-soft);
+  border-radius: 4px; padding: 3px 7px; margin-bottom: 10px;
+}
+.check { display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start; cursor: pointer; }
+.check input { width: 24px; height: 24px; margin: 1px 0 0; accent-color: var(--stencil); }
+.check small { display: block; color: var(--muted); font-size: 14px; }
+.sigbox { position: relative; border: 1.5px dashed var(--stencil); border-radius: 8px; background: var(--paper); }
+canvas { display: block; width: 100%; height: 170px; touch-action: none; border-radius: 8px; cursor: crosshair; }
+.sigline {
+  position: absolute; left: 16px; right: 16px; bottom: 38px; border-bottom: 1px solid var(--line);
+  pointer-events: none;
+}
+.sigx { position: absolute; left: 16px; bottom: 42px; color: var(--muted); font-size: 18px; pointer-events: none; }
+.sigbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+button { font: inherit; cursor: pointer; border-radius: 8px; }
+.ghost { background: none; border: 1px solid var(--line); color: var(--ink); padding: 8px 14px; font-size: 14px; }
+.primary {
+  background: var(--stencil); color: var(--on-stencil); border: none; padding: 16px;
+  font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: 0.06em;
+  text-transform: uppercase; width: 100%;
+}
+.primary:disabled { opacity: 0.6; cursor: default; }
+.status { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.status li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; }
+.dot {
+  width: 22px; height: 22px; border-radius: 50%; margin-top: 2px;
+  border: 2px solid var(--muted); display: grid; place-items: center; font-size: 13px; font-weight: 700;
+}
+.dot.yes { border-color: var(--ok); background: var(--ok); color: var(--surface); }
+.idcard { border: 2px solid var(--stencil); background: var(--stencil-soft); }
+.idcard p { margin: 0; }
+.example { border-style: dashed; }
+dl { margin: 0; display: grid; grid-template-columns: minmax(110px, 40%) 1fr; gap: 8px 12px; font-size: 14px; }
+dt { color: var(--muted); }
+dd { margin: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1 class="brand">Reign <span>Tattoo</span></h1>
+    <p class="sub">Consent form · Dallas, TX. Takes about two minutes. Fill it out before your session.</p>
+  </header>
+
+  <form id="consentForm" novalidate>
+    <section>
+      <h2>Your details</h2>
+      <div class="row">
+        <div class="field">
+          <label class="lbl" for="firstName">First name</label>
+          <input type="text" id="firstName" autocomplete="given-name" autocapitalize="words">
+          <p class="err" id="firstNameErr" hidden></p>
+        </div>
+        <div class="field">
+          <label class="lbl" for="lastName">Last name</label>
+          <input type="text" id="lastName" autocomplete="family-name" autocapitalize="words">
+          <p class="err" id="lastNameErr" hidden></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label class="lbl" for="phone">Mobile phone <span class="opt">(optional)</span></label>
+          <input type="tel" id="phone" autocomplete="tel" inputmode="tel">
+        </div>
+        <div class="field">
+          <label class="lbl" for="email">Email <span class="opt">(optional)</span></label>
+          <input type="email" id="email" autocomplete="email" inputmode="email">
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Consent form</h2>
+      <details id="termsBox">
+        <summary>Read the tattoo consent form</summary>
+        <div class="terms">
+          <span class="tag">Sample wording</span>
+          <ol>
+            <li>I am at least 18 years old and will show a valid government-issued photo ID.</li>
+            <li>I am not under the influence of alcohol or drugs.</li>
+            <li>I understand a tattoo is a permanent change to my skin, and that removal is costly and may not fully work.</li>
+            <li>I understand colors and lines can look different on skin than on paper, and can change as the tattoo heals and ages.</li>
+            <li>I have told my artist about any allergies, skin conditions, or medications that could affect healing.</li>
+            <li>I understand infection is possible if I do not follow the aftercare instructions I am given.</li>
+            <li>I approve the design, spelling, and placement before the tattoo begins.</li>
+            <li>I release Reign Tattoo and its artists from claims that come from a tattoo I asked for and approved.</li>
+          </ol>
+        </div>
+      </details>
+      <label class="check" for="agree">
+        <input type="checkbox" id="agree">
+        <span>I have read the consent form and I agree to it.</span>
+      </label>
+      <p class="err" id="agreeErr" hidden></p>
+    </section>
+
+    <section>
+      <h2>Health check</h2>
+      <label class="check" for="notPregnant">
+        <input type="checkbox" id="notPregnant">
+        <span>I am not pregnant.</span>
+      </label>
+      <label class="check" for="notDiabetic">
+        <input type="checkbox" id="notDiabetic">
+        <span>I am not diabetic.</span>
+      </label>
+      <p class="hint">Leave a box unchecked if it does not apply to you. A team member will talk it through with you before your session.</p>
+    </section>
+
+    <section>
+      <h2>Sign here</h2>
+      <div class="sigbox">
+        <canvas id="sig" tabindex="0" aria-label="Signature box. Sign with your finger or mouse."></canvas>
+        <span class="sigx" aria-hidden="true">✕</span>
+        <span class="sigline" aria-hidden="true"></span>
+      </div>
+      <div class="sigbar">
+        <p class="hint">Sign with your finger.</p>
+        <button type="button" class="ghost" id="clearSig">Clear</button>
+      </div>
+      <p class="err" id="sigErr" hidden></p>
+    </section>
+
+    <section>
+      <h2>Stay in touch</h2>
+      <label class="check" for="optIn">
+        <input type="checkbox" id="optIn">
+        <span>I agree to receive email and text messages from Reign Tattoo (Dallas location).
+          <small>Optional. Message and data rates may apply. Reply STOP to opt out at any time.</small></span>
+      </label>
+      <p class="err" id="optInErr" hidden></p>
+    </section>
+
+    <p class="err" id="formErr" hidden></p>
+    <button type="submit" class="primary" id="submitBtn">Sign and submit</button>
+  </form>
+
+  <div id="done" hidden>
+    <section class="idcard">
+      <h2 id="doneTitle">One step left</h2>
+      <p>An in-store team member will take a photo of your ID. After that, your consent form is complete.</p>
+      <p>Have your photo ID ready and let the front desk know you have signed.</p>
+    </section>
+    <section>
+      <ul class="status">
+        <li><span class="dot yes" aria-hidden="true">✓</span><span><strong>Consent form signed</strong><br><span class="hint" id="doneTime"></span></span></li>
+        <li><span class="dot" aria-hidden="true"></span><span><strong>ID photo</strong><br><span class="hint">Waiting on a team member</span></span></li>
+      </ul>
+    </section>
+    <button type="button" class="ghost" id="again">Start a new form</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $('consentForm'), done = $('done');
+
+  /* ---------- signature pad ---------- */
+  var cv = $('sig'), ctx = cv.getContext('2d'), strokes = [], current = null;
+  function inkColor() {
+    return getComputedStyle(document.documentElement).getPropertyValue('--stencil').trim() || '#4a35b5';
+  }
+  function paint(c, w, h, color) {
+    c.lineWidth = 2.4; c.lineCap = 'round'; c.lineJoin = 'round'; c.strokeStyle = color; c.fillStyle = color;
+    strokes.forEach(function (s) {
+      if (s.length === 1) { c.beginPath(); c.arc(s[0][0] * w, s[0][1] * h, 1.4, 0, 6.3); c.fill(); return; }
+      c.beginPath(); c.moveTo(s[0][0] * w, s[0][1] * h);
+      for (var i = 1; i < s.length; i++) c.lineTo(s[i][0] * w, s[i][1] * h);
+      c.stroke();
+    });
+  }
+  function redraw() {
+    var r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    if (!r.width) return;
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint(ctx, r.width, r.height, inkColor());
+  }
+  function pt(e) {
+    var r = cv.getBoundingClientRect();
+    return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height];
+  }
+  cv.addEventListener('pointerdown', function (e) {
+    e.preventDefault(); try { cv.setPointerCapture(e.pointerId); } catch (x) {}
+    current = [pt(e)]; strokes.push(current); redraw();
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!current) return; e.preventDefault(); current.push(pt(e)); redraw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (n) {
+    cv.addEventListener(n, function () { current = null; if (hasSig()) setErr('sig', ''); });
+  });
+  function hasSig() {
+    var n = 0; strokes.forEach(function (s) { n += s.length; }); return n >= 8;
+  }
+  function sigPng() { /* dark ink on white, for the file saved to Drive */
+    var o = document.createElement('canvas'); o.width = 800; o.height = 300;
+    var c = o.getContext('2d'); c.fillStyle = '#ffffff'; c.fillRect(0, 0, 800, 300);
+    paint(c, 800, 300, '#1b1830'); return o.toDataURL('image/png');
+  }
+  $('clearSig').addEventListener('click', function () { strokes = []; redraw(); });
+  window.addEventListener('resize', redraw);
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', redraw);
+  }
+  new MutationObserver(redraw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  redraw();
+
+  /* ---------- validation ---------- */
+  function setErr(key, msg) {
+    var el = $(key + 'Err'); if (!el) return;
+    el.textContent = msg; el.hidden = !msg;
+  }
+  function validate() {
+    var ok = true, first = null;
+    function fail(key, msg, focusId) { setErr(key, msg); ok = false; if (!first) first = $(focusId || key); }
+    ['firstName', 'lastName', 'agree', 'sig', 'optIn', 'form'].forEach(function (k) { setErr(k, ''); });
+    if (!$('firstName').value.trim()) fail('firstName', 'Enter your first name.');
+    if (!$('lastName').value.trim()) fail('lastName', 'Enter your last name.');
+    if (!$('agree').checked) { $('termsBox').open = true; fail('agree', 'Read the consent form and check the box to agree.'); }
+    if (!hasSig()) fail('sig', 'Sign in the box above.');
+    if ($('optIn').checked && !$('phone').value.trim() && !$('email').value.trim())
+      fail('optIn', 'Add a mobile phone or email above so we can reach you, or uncheck this box.', 'phone');
+    if (!ok) {
+      setErr('form', 'A few things still need your attention above.');
+      if (first) { first.focus(); first.scrollIntoView({ block: 'center' }); }
+    }
+    return ok;
+  }
+
+  /* ---------- submit ---------- */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate()) return;
+    var now = new Date();
+    var data = {
+      timestamp: now.toLocaleString('en-US', { timeZone: 'America/Chicago', dateStyle: 'medium', timeStyle: 'short' }) + ' CT',
+      firstName: $('firstName').value.trim(),
+      lastName: $('lastName').value.trim(),
+      phone: $('phone').value.trim(),
+      email: $('email').value.trim(),
+      consentSigned: true,
+      notPregnant: $('notPregnant').checked,
+      notDiabetic: $('notDiabetic').checked,
+      optIn: $('optIn').checked,
+      signature: sigPng()
+    };
+    var btn = $('submitBtn'); btn.disabled = true; btn.textContent = 'Submitting';
+    function finish() { btn.disabled = false; btn.textContent = 'Sign and submit'; }
+    var gs = window.google && google.script && google.script.run;
+    if (gs) { /* live: running inside the Google Apps Script web app */
+      gs.withSuccessHandler(function () { finish(); showDone(data); })
+        .withFailureHandler(function () { finish(); setErr('form', 'That did not go through. Check your connection and tap submit again.'); })
+        .submitConsent(data);
+    } else { finish(); showDone(data); }
+  });
+
+  function showDone(d) {
+    $('doneTitle').textContent = 'Thanks, ' + d.firstName + '. One step left';
+    $('doneTime').textContent = d.timestamp;
+    var rows = [
+      ['Timestamp', d.timestamp], ['First name', d.firstName], ['Last name', d.lastName],
+      ['Phone', d.phone || '(blank)'], ['Email', d.email || '(blank)'],
+      ['Consent signed', 'Yes'],
+      ['Pregnant', d.notPregnant ? 'No (confirmed)' : 'FLAG: not confirmed'],
+      ['Diabetic', d.notDiabetic ? 'No (confirmed)' : 'FLAG: not confirmed'],
+      ['Email/SMS opt-in', d.optIn ? 'Yes' : 'No'],
+      ['Signature', 'Link to image in Google Drive'],
+      ['ID photo', 'Added by staff after upload']
+    ];
+    var dl = $('rowPreview'); if (dl) dl.textContent = '';
+    if (dl) rows.forEach(function (r) {
+      var dt = document.createElement('dt'), dd = document.createElement('dd');
+      dt.textContent = r[0]; dd.textContent = r[1]; dl.appendChild(dt); dl.appendChild(dd);
+    });
+    form.hidden = true; done.hidden = false; window.scrollTo(0, 0);
+  }
+
+  $('again').addEventListener('click', function () {
+    form.reset(); strokes = []; $('termsBox').open = false;
+    done.hidden = true; form.hidden = false; redraw(); window.scrollTo(0, 0);
+  });
+})();
+</script>
